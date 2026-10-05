@@ -10,6 +10,6 @@ Read `docs/BUILD-BRIEF.md` and `docs/EVIDENCE.md` before changing the story or a
 - Use the content module for copy; keep the visual design in CSS tokens and components.
 - Test build/typecheck for code changes. Verify changed interactions and affected viewport layouts.
 - Do not introduce a database, authentication, CMS or additional subscriptions without a concrete need.
-- Avoid simultaneous edits in Lovable and local tools. This repository is currently independent of Lovable.
+- Avoid simultaneous edits in Lovable and local tools. This repository is the development source; the confirmed Lovable production sync repository is soapyfranco/happy-canvas-starter-18. See docs/LOVABLE-TRANSFER.md before transferring changes.
 
 Default commands: `npm ci`, `npm run dev`, `npm run check`. Node 24.

@@ -1,71 +1,24 @@
-# Lovable source transfer
+# Lovable connection and publication
 
-The completed portfolio is currently in GitHub, not in a Lovable project. This document prepares a code-preserving transfer through the official Lovable integration. It does not mean a deployment has occurred.
+## Confirmed project and source
 
-## Existing project target
+- Existing project: [Fresh Start Site](https://lovable.dev/projects/89621581-cd07-40d9-8406-9a50921e37bd)
+- Project ID: `89621581-cd07-40d9-8406-9a50921e37bd`
+- Confirmed GitHub sync repository: [soapyfranco/happy-canvas-starter-18](https://github.com/soapyfranco/happy-canvas-starter-18)
+- Connected branch: `main`
+- Preview: https://id-preview--89621581-cd07-40d9-8406-9a50921e37bd.lovable.app
+- Publication URL: https://happy-canvas-starter-18.lovable.app
 
-Use the existing **Fresh Start Site** project supplied by the user:
+The connection is verified. The repository README contains the supplied Lovable project ID, and its original head matched Lovable's latest commit. The interactive revision was transferred through GitHub sync at commit `99ae87add3787781784cde03220cfd73abe203c6`, based on the tested development source at `8e95933639deb2d7e98d7d71cd122581a944cf77`. Lovable reported the new commit, a ready preview, and the redesigned cover screenshot.
 
-`https://lovable.dev/projects/89621581-cd07-40d9-8406-9a50921e37bd`
+## Transfer treatment
 
-Project ID: `89621581-cd07-40d9-8406-9a50921e37bd`.
+The transfer updated Portfolio, the content module and CSS; added real Dial Up media and self-hosted Newsreader fonts with their license; and preserved Lovable's root, routes, package manifest, lockfile, server and Vite configuration. Array assertions accommodate the production project's stricter TypeScript checks without changing runtime behavior. Existing images and exhibits were retained.
 
-Update this project; do not create another project. Replace its fictional Alex Morgan portfolio with the completed Chukuemeka / David Nkemere portfolio. This is a transfer of an already implemented and tested application. Keep the completed portfolio's design, writing, interactions, responsive layouts and real imagery.
+The main experience remains nine full-screen horizontal chapters with a visual index, swipe, wheel and keyboard navigation, interactive Account Progression, pilot period comparison, evidence and article overlays, archive film and KAIRO selector. California Deep Clean remains immediately before KAIRO. Original confidential decks and private screenshots remain excluded.
 
-## Transfer message
+No Lovable AI generation round was used. For ongoing changes, work through the confirmed production repository and preserve its Lovable infrastructure. Do not replace its history or edit the same files in Lovable and local tools simultaneously. This development repository is not automatically the production sync target.
 
-Source repository: `https://github.com/soapyfranco/chukuemeka`
+## Publication state
 
-Source ref: latest `main`. The interactive revision supersedes the original vertical-page implementation at `7ade592953fa9270a11421664025c156c1f241c2`.
-
-Use the latest `main` source, including the interactive revision. Read `AGENTS.md`, `docs/BUILD-BRIEF.md` and `docs/EVIDENCE.md`. Copy the application files and public assets into the existing Fresh Start Site project. This is a source-file transfer, not an attempt to link an existing repository through Lovable's GitHub import UI.
-
-The application already uses React, TypeScript, TanStack Start and Vite. Retain Lovable's supported generated scaffold and build infrastructure wherever required for deployment; adapt only the routing, entry point or build configuration needed to run the transferred application. Preserve the body of `Portfolio`, the content module, the CSS and all interaction behavior. Do not substitute a newly generated landing page.
-
-Runtime source:
-
-- `src/content/portfolio.ts`
-- `src/components/Portfolio.tsx`
-- `src/styles.css`
-- `src/routes/index.tsx`
-- `src/routes/__root.tsx`
-- `src/router.tsx`
-- `src/routeTree.gen.ts`
-- `public/favicon.svg`
-- All files in `public/media/`
-
-Read `package.json` for dependencies. The site imports `@fontsource-variable/inter` and `@fontsource-variable/newsreader`; preserve self-hosted typography, including Newsreader italic. The existing Nitro/Vite setup is for independent hosting; adjust it only if Lovable requires its own adapter. Do not transfer `vercel.json` as a Lovable hosting requirement.
-
-Retrieve files from:
-
-`https://raw.githubusercontent.com/soapyfranco/chukuemeka/main/<path>`
-
-Retrieve a complete source archive from:
-
-`https://github.com/soapyfranco/chukuemeka/archive/refs/heads/main.zip`
-
-If source retrieval fails, report that failure and request the source attachment. Do not approximate the site from a description or invent missing images.
-
-Preserve these requirements:
-
-- White space, large type, warm white and charcoal, restrained coral accents, real project photography and thin editorial rules.
-- Nine-slide executive deck mode with keyboard controls, evidence overlays, click-to-load YouTube players and article source previews.
-- The primary experience is nine full-screen horizontal chapters with swipe, wheel and keyboard navigation, a visual index and shareable chapter links. Do not flatten it back into a vertical landing page.
-- Preserve clickable photography compositions, the archive lightbox, user-controlled inline Dial Up film, full-screen KAIRO selector, interactive Account Progression stages and switchable pilot comparison.
-- California Deep Clean immediately before KAIRO in the website and deck.
-- David's autobiographical voice, Nigerian parents story, creative origin, Net Health transformation, seller-led pilot, Account Progression, outbound and GTM commissioning.
-- Metric context and attribution footnotes. Observations and test hypotheses remain distinct.
-- No database, CMS, authentication, new paid integrations or generated portrait.
-- No original confidential Net Health decks, raw private screenshots or named customer material.
-
-This transfer is explicitly requested for public Lovable hosting. Remove the draft `noindex, nofollow` directive once the application is ready to publish. Do not change copy or claims to accomplish the transfer.
-
-Validate the build and TypeScript, media loading, narrow mobile layouts, overlays, deck keyboard behavior and chapter order. Return the existing project ID and its updated preview URL. Publishing will be performed through the integration's deploy capability after verification.
-
-## Connection and publishing state
-
-The user connected Lovable to ChatGPT, and installation is confirmed. This running Work session still does not expose Lovable editing or deployment tools. No Lovable source transfer or publication is claimed. The supported integration can edit and deploy projects when its tools are available, without using the blocked cloud-browser sign-in route.
-
-Agent editing consumes Lovable build credits; deployment through the official MCP server does not. Prefer direct source transfer into this project's confirmed GitHub sync repository when available, to avoid an agent rebuild. Actual credit use must be read from the connected workspace rather than estimated or promised.
-
-Only the user-specified Fresh Start Site sample portfolio is authorized for replacement. Other Lovable projects must remain untouched. Confirm Fresh Start Site's GitHub sync target before transferring code or continuing local edits; the standalone `soapyfranco/chukuemeka` repository does not automatically become the sync target.
+The user previously authorized public Lovable publication. The publish API accepted the requests but returned `pending`; the latest deployment ID is `9ab4304e-3e90-4855-8dad-d7c533692570`. The available tools do not expose a deployment-status query, and external verification could not access the live domain. Completion is not claimed. See `docs/VALIDATION.md` for the exact checks and limitations.

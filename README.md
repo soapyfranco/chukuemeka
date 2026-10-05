@@ -41,11 +41,11 @@ npm start       # Serve the completed production build locally
 
 GitHub is the shared source of truth. Use Codex and VS Code for content, layout, interactions, fixes and testing. Commit small changes and use branches for larger experiments. Avoid editing the same files simultaneously in multiple tools.
 
-The user connected Lovable to ChatGPT; the current Work session still does not expose its editing or publishing tools. This repository remains an independent TanStack Start project. The supplied Fresh Start Site project needs a source transfer or an update through its confirmed GitHub sync repository; connecting this repository alone does not import the site. See `docs/LOVABLE-TRANSFER.md` for the existing project target and transfer instructions. No Lovable credits were used for this revision.
+Lovable access is now verified. The interactive revision is synced into the existing [Fresh Start Site project](https://lovable.dev/projects/89621581-cd07-40d9-8406-9a50921e37bd) through its confirmed production repository, [soapyfranco/happy-canvas-starter-18](https://github.com/soapyfranco/happy-canvas-starter-18). This repository remains the development source. GitHub sync avoided a Lovable AI generation round; no Lovable build credits were used for the transfer. See `docs/LOVABLE-TRANSFER.md` for the current workflow and publication state.
 
 ## Deploy
 
-The repository includes `vercel.json` and the Nitro Vite integration. Vercel can detect TanStack Start when importing this Git repository. No runtime secrets are required. The code has not been deployed or connected to a custom domain.
+The repository includes `vercel.json` and the Nitro Vite integration. Vercel can detect TanStack Start when importing this Git repository. No runtime secrets are required. The interactive code is available in Lovable preview. The publication API accepted the update but returned `pending`; completion has not been independently confirmed. No custom domain is connected.
 
 The site currently has `noindex, nofollow` metadata while the copy and evidence are reviewed. This is an indexing preference, not access control. Review `docs/EVIDENCE.md` before publishing; remove the draft robots directive when the public version is ready.
 

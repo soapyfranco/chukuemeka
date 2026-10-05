@@ -37,4 +37,4 @@ Replace the California brand-only exhibit with an original project screenshot an
 
 ## Environment and cost
 
-GitHub + Codex + VS Code for ongoing changes. Local development does not consume Lovable build credits. This implementation uses the current TanStack Start foundation used by new Lovable SSR projects but is not connected to Lovable. Hosting charges, domain costs and AI tool subscriptions are separate from build credits; do not describe them as automatically free.
+GitHub + Codex + VS Code for ongoing changes. Local development does not consume Lovable build credits. The implementation uses TanStack Start. The existing Lovable project is connected to soapyfranco/happy-canvas-starter-18; the tested interactive revision has been transferred through that repository. Hosting charges, domain costs and AI tool subscriptions are separate from build credits; do not describe them as automatically free.

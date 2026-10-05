@@ -24,7 +24,7 @@ The production application passed 19 interaction checks and 45 chapter-layout ch
 
 All nine chapters were checked at 1280×720, 1024×768, 760×844, 390×844 and 320×568. No document-wide overflow or clipped horizontal chapter content was observed. Longer chapters scroll internally on small screens, while chapter controls remain visible. The mobile visual index fits its dialog.
 
-YouTube embed sources and direct fallback links were checked; third-party playback was not independently verified. Contact uses a mailto link; no message was sent. Lovable transfer and publication remain unverified because its editing and publishing tools are unavailable in the current session.
+YouTube embed sources and direct fallback links were checked; third-party playback was not independently verified. Contact uses a mailto link; no message was sent. Lovable connection and source transfer are now verified as described below.
 
 ## Motion and navigation
 
@@ -45,3 +45,9 @@ The recording shows the production application: chapter transitions, an expanded
 ![Executive deck](previews/deck.png)
 
 ![Mobile introduction](previews/mobile.png)
+
+## Lovable transfer verification
+
+Access to the existing project was verified. Its README project ID and GitHub commit matched the connected private repository, soapyfranco/happy-canvas-starter-18. The transfer preserved Lovable infrastructure and dependencies, added stricter TypeScript compatibility and self-hosted Newsreader font files, and synced commit `99ae87add3787781784cde03220cfd73abe203c6`. Lovable reported the matching commit, a ready preview and a screenshot of the interactive cover.
+
+Publication was requested for https://happy-canvas-starter-18.lovable.app. The API returned `pending`; the latest request ID is `9ab4304e-3e90-4855-8dad-d7c533692570`. The available connection exposes no deployment-status query. External interaction verification was unavailable: the test browser received an empty response and the public web lookup could not access the domain. The local checks above are not claimed as live-site checks. No Lovable AI generation round was used.
