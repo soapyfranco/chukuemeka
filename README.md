@@ -1,10 +1,10 @@
 # Chukuemeka / David Nkemere
 
-A personal GTM portfolio: half executive deck, half editorial web experience.
+A personal GTM portfolio: an interactive chapter experience with an executive deck view.
 
 ![Desktop design preview](docs/previews/desktop.png)
 
-[See desktop, deck and mobile previews and validation](docs/VALIDATION.md).
+[See the interaction walkthrough, previews and validation](docs/VALIDATION.md).
 
 React 19, TypeScript, TanStack Start, Vite and Nitro. The project runs independently of Lovable and does not need a backend, API key or database. Vercel deployment configuration is included.
 
@@ -31,7 +31,7 @@ npm start       # Serve the completed production build locally
 | File | Purpose |
 | --- | --- |
 | `src/content/portfolio.ts` | Story, metrics, source context, case studies, links and deck slides |
-| `src/components/Portfolio.tsx` | Sections, evidence overlays, video player, article previews and deck controls |
+| `src/components/Portfolio.tsx` | Horizontal chapters, visual index, interactive models, media and deck controls |
 | `src/styles.css` | Design tokens, layouts, motion, mobile and print styles |
 | `public/media/` | Optimized real project imagery and portfolio diagrams |
 | `docs/BUILD-BRIEF.md` | Creative direction and roadmap for further work |
@@ -41,7 +41,7 @@ npm start       # Serve the completed production build locally
 
 GitHub is the shared source of truth. Use Codex and VS Code for content, layout, interactions, fixes and testing. Commit small changes and use branches for larger experiments. Avoid editing the same files simultaneously in multiple tools.
 
-Lovable has not been connected: its sign-in is restricted in the available cloud browser. This is an independent TanStack Start project, not a Lovable-generated project. Lovable does not currently import existing GitHub repositories. A future Lovable connection therefore requires its own project and a code transfer; connecting this repository alone will not import the site. No Lovable credits were used for this build.
+The user connected Lovable to ChatGPT; the current Work session still does not expose its editing or publishing tools. This repository remains an independent TanStack Start project. The supplied Fresh Start Site project needs a source transfer or an update through its confirmed GitHub sync repository; connecting this repository alone does not import the site. See `docs/LOVABLE-TRANSFER.md` for the existing project target and transfer instructions. No Lovable credits were used for this revision.
 
 ## Deploy
 
@@ -51,7 +51,10 @@ The site currently has `noindex, nofollow` metadata while the copy and evidence 
 
 ## Experience included
 
-- Responsive editorial site and nine-slide executive deck mode.
+- Nine full-screen chapters with horizontal swipe, keyboard and wheel navigation, shareable chapter links and a visual index.
+- Photography compositions, photo lightbox, an inline Dial Up archive film and a full-screen KAIRO film selector.
+- Interactive Account Progression stages and a switchable seller-led pilot readout.
+- Nine-slide executive deck mode.
 - Keyboard-accessible evidence overlays, video popups and external source previews.
 - Three operating model exhibits: Account Progression, outbound and commissioning.
 - Seller-led pilot, autobiographical chapter, California Deep Clean immediately before KAIRO, and contact link.
@@ -59,4 +62,4 @@ The site currently has `noindex, nofollow` metadata while the copy and evidence 
 
 ## Project status
 
-This is a first implementation for design and content review. Personal portrait photography, richer California Deep Clean project screenshots, approved original deck excerpts, final reporting periods, a downloadable resume and domain choice are remaining editorial inputs. Existing source decks and private chat screenshots are not committed to this public repository.
+This is an interactive revision for design and content review. Personal portrait photography, richer California Deep Clean project screenshots, approved original deck excerpts, final reporting periods, a downloadable resume and domain choice are remaining editorial inputs. Existing source decks and private chat screenshots are not committed to this public repository.

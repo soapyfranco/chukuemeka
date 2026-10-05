@@ -6,6 +6,36 @@ export const profile = {
   focus: 'GTM strategy & creative direction',
 }
 
+export const journey = [
+  { id: 'top', label: 'Introduction', short: 'Start', image: '/media/jwio.webp', caption: 'GTM strategy & creative direction', tone: 'light' },
+  { id: 'work', label: 'The transformation', short: 'Net Health', image: '/media/account-progression.svg', caption: 'How a revenue team moves together', tone: 'dark' },
+  { id: 'performance', label: 'Making growth observable', short: 'Impact', image: '/media/outbound-model.svg', caption: 'Digital performance → executive translation', tone: 'light' },
+  { id: 'first-test', label: 'The first test', short: 'The test', image: '/media/work-commissioning.svg', caption: 'Sellers upstream of marketing', tone: 'light' },
+  { id: 'operating-model', label: 'The operating model', short: 'The model', image: '/media/account-progression.svg', caption: 'Account Progression · outbound · interlocks', tone: 'light' },
+  { id: 'story', label: 'The long way here', short: 'Origins', image: '/media/dialup-night.webp', caption: 'Northwestern → Dial Up → GTM', tone: 'dark' },
+  { id: 'california', label: 'California Deep Clean', short: 'California', image: '/media/california-deep-clean.webp', caption: 'Founder · website · CRM · growth', tone: 'light' },
+  { id: 'kairo', label: 'The art never left', short: 'KAIRO', image: '/media/halo.webp', caption: 'HALO / JWIO · creative direction', tone: 'dark' },
+  { id: 'contact', label: 'The next chapter', short: 'Connect', image: '/media/dialup-collective.webp', caption: 'Let’s build what’s next', tone: 'light' },
+] as const
+
+export const gallery = [
+  { image: '/media/dialup-night.webp', label: 'The early days', caption: 'A frame from the public Dial Up party archive. Chicago.', kind: 'Dial Up / archive' },
+  { image: '/media/dialup-collective.webp', label: 'The collective', caption: 'A frame from Dial Up’s public squad archive. The creative practice began with people.', kind: 'Dial Up / archive' },
+  { image: '/media/dialup-studio.webp', label: 'In good company', caption: 'A second frame from Dial Up’s public squad archive.', kind: 'Dial Up / archive' },
+  { image: '/media/kidsuper.webp', label: 'KidSuper × Shopify', caption: 'Original thumbnail from the supplied Shopify activation film.', kind: 'Creative activation' },
+  { image: '/media/halo.webp', label: 'HALO', caption: 'KAIRO, directed by David Nkemere. Original film thumbnail, 2026.', kind: 'Creative direction' },
+  { image: '/media/jwio.webp', label: 'JWIO', caption: 'KAIRO, directed by David Nkemere. Original film thumbnail, 2026.', kind: 'Creative direction' },
+]
+
+export const accountStages = [
+  { title: 'Read the signal', owner: 'One commercial view', detail: 'Start with an account that is showing intent, facing a barrier, or failing to progress. Establish the real commercial problem.' },
+  { title: 'Assign a path', owner: 'Clear ownership', detail: 'Give the account an owner and a route. Net-new, expansion, reactivation and nurture require different next actions.' },
+  { title: 'Build coverage', owner: 'Buying committee', detail: 'Understand who needs to be reached, what they care about, and where the team already has access.' },
+  { title: 'Run the play', owner: 'Coordinated activation', detail: 'Connect seller outreach, content, paid activation and account-specific work around the same commercial premise.' },
+  { title: 'Inspect movement', owner: 'Shared evidence', detail: 'Look for buyer conversations, qualification and pipeline movement. Activity alone does not establish progress.' },
+  { title: 'Set the next play', owner: 'A real decision', detail: 'Advance, change the stakeholder or proposition, or return the account to nurture until a new signal arrives.' },
+]
+
 export const chapters = [
   { id: 'work', number: '01', label: 'The transformation' },
   { id: 'first-test', number: '02', label: 'The first test' },

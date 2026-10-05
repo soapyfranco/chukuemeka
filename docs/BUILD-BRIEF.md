@@ -25,7 +25,11 @@ California Deep Clean must remain directly before KAIRO. The nine-slide deck fol
 
 ## Interaction vocabulary
 
-Chapter navigation, evidence overlays, keyboard deck navigation and click-to-open videos. Article links open a designed source preview with a direct link, rather than an unreliable embedded article iframe. YouTube embeds load only after a visitor requests a film, with a direct YouTube link available.
+The primary experience is a horizontal sequence of nine full-screen chapters, not a vertical landing page. Visitors can follow the sequence using swipe, keyboard, wheel or persistent next/previous controls, or jump through a visual index. Individual chapter hashes support direct linking. Small screens permit internal chapter scrolling when needed; the document itself stays within the viewport.
+
+Photo compositions are navigation surfaces. An archive lightbox, user-controlled inline Dial Up film, and full-screen KAIRO film selector carry the creative work. The GTM chapters include an interactive six-stage Account Progression loop, model tabs, clickable executive exhibits and a 2024/2025 pilot comparison with animated bars. Long narratives and evidence open in accessible dialogs.
+
+Article links open a designed source preview with a direct link. YouTube embeds load only after a visitor requests a film, with a direct YouTube link available. Reduced-motion preferences disable the motion, and offscreen chapters are inert to keep keyboard focus in the visible experience.
 
 ## Further design work
 

@@ -34,6 +34,7 @@ The intervals differ in length. No randomized control, exact attribution rules o
 - HALO / JWIO: original YouTube video thumbnails from the supplied KAIRO links, downloaded from `img.youtube.com` and optimized to WebP. These show KAIRO, not David.
 - KidSuper: original thumbnail for the supplied Shopify activation video.
 - Dial Up: original public brand image and a frame from `/videos/party.mp4` on dialupstuff.com. The archive image is intentionally documentary.
+- Interactive revision: three additional documentary frames from the public `party.mp4` (4 seconds) and `squad.mp4` (1.5 and 4 seconds) archives. `dialup-studio.webp` is an archive filename, not a claim that the scene is a studio. The inline film is the original public party clip, played only on request.
 - California Deep Clean: its current public open-graph brand image. The old Lovable URL redirects to californiadeepclean.com.
 
 No generated portrait, stock business photography, fabricated quote or customer testimonial is used.

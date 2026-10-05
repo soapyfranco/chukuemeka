@@ -1,5 +1,7 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
 import '@fontsource-variable/inter'
+import '@fontsource-variable/newsreader'
+import '@fontsource-variable/newsreader/wght-italic.css'
 import '../styles.css'
 
 export const Route = createRootRoute({
