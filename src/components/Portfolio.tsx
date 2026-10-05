@@ -1,171 +1,64 @@
-import { useEffect, useRef, useState } from 'react'
-import { accountStages, cases, deck, evidence, gallery, journey, links, media, profile } from '../content/portfolio'
-import type { EvidenceKey, LinkKey, MediaKey } from '../content/portfolio'
-
-type Overlay = { type: 'evidence'; key: EvidenceKey } | { type: 'video'; key: MediaKey } | { type: 'link'; key: LinkKey } | { type: 'detail'; key: 'work' | 'story' | 'california' | 'case' } | { type: 'photo' } | { type: 'index' } | { type: 'deck' } | { type: 'results' } | { type: 'pilot' } | null
-function Arrow({ direction = 'up' }: { direction?: 'up' | 'left' | 'right' }) { return <svg className={`arrow arrow-${direction}`} width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" stroke="currentColor" strokeWidth="1.5" /></svg> }
-function Play() { return <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 4 13 8-13 8V4Z" fill="currentColor" /></svg> }
+import { Link } from '@tanstack/react-router'
+import { story, profile } from '../content/portfolio'
+import { Site, useSite, MediaCard, InlineSource, Brand, StoryLink } from './Site'
 
 export function Portfolio() {
-  const [active, setActive] = useState(0)
-  const [overlay, setOverlay] = useState<Overlay>(null)
-  const [activeCase, setActiveCase] = useState<EvidenceKey>('account')
-  const [stage, setStage] = useState(0)
-  const [slide, setSlide] = useState(0)
-  const [photo, setPhoto] = useState(0)
-  const [pilotYear, setPilotYear] = useState<2024 | 2025>(2025)
-  const [film, setFilm] = useState<'halo' | 'jwio'>('halo')
-  const [archivePlaying, setArchivePlaying] = useState(false)
-  const track = useRef<HTMLElement>(null)
-  const dialog = useRef<HTMLDialogElement>(null)
-  const archive = useRef<HTMLVideoElement>(null)
-  const returnFocus = useRef<HTMLElement | null>(null)
-  const activeRef = useRef(0)
-  const currentCase = cases.find(c => c.id === activeCase)!
-  const dark = journey[active]!.tone === 'dark'
-  const open = (value: Overlay) => { if (!overlay) returnFocus.current = document.activeElement as HTMLElement; setOverlay(value); if (value?.type === 'deck') setSlide(0) }
-  const close = () => { dialog.current?.close(); setOverlay(null); returnFocus.current?.focus() }
-  const go = (index: number) => {
-    const element = track.current
-    if (!element) return
-    element.scrollTo({ left: Math.max(0, Math.min(journey.length - 1, index)) * element.clientWidth, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
-  }
-  const showPhoto = (index: number) => { setPhoto(index); open({ type: 'photo' }) }
+  return <Site><Homepage /></Site>
+}
 
-  useEffect(() => {
-    const element = track.current!
-    let frame = 0, hashTimer = 0, lastWheel = 0, wheelSum = 0
-    const update = () => {
-      cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(() => {
-        const index = Math.max(0, Math.min(journey.length - 1, Math.round(element.scrollLeft / element.clientWidth)))
-        activeRef.current = index
-        setActive(index)
-        window.clearTimeout(hashTimer)
-        hashTimer = window.setTimeout(() => {
-          const hash = `#${journey[activeRef.current]!.id}`
-          if (window.location.hash !== hash) window.history.replaceState(null, '', hash)
-        }, 180)
-      })
-    }
-    const wheel = (event: WheelEvent) => {
-      if (document.querySelector('dialog[open]') || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return
-      const content = (event.target as HTMLElement).closest<HTMLElement>('[data-local-scroll]')
-      if (content && content.scrollHeight > content.clientHeight + 4) return
-      const chapter = (event.target as HTMLElement).closest<HTMLElement>('.chapter')
-      if (chapter && chapter.scrollHeight > chapter.clientHeight + 4) return
-      event.preventDefault()
-      if (performance.now() - lastWheel < 700) return
-      wheelSum += event.deltaY
-      if (Math.abs(wheelSum) < 40) return
-      go(activeRef.current + (wheelSum > 0 ? 1 : -1))
-      wheelSum = 0
-      lastWheel = performance.now()
-    }
-    const align = () => element.scrollTo({ left: activeRef.current * element.clientWidth, behavior: 'instant' })
-    const fromHash = () => { const index = journey.findIndex(c => `#${c.id}` === window.location.hash); if (index >= 0) { activeRef.current = index; setActive(index); align() } }
-    fromHash()
-    element.addEventListener('scroll', update, { passive: true })
-    element.addEventListener('wheel', wheel, { passive: false })
-    window.addEventListener('resize', align)
-    window.addEventListener('hashchange', fromHash)
-    return () => { cancelAnimationFrame(frame); window.clearTimeout(hashTimer); element.removeEventListener('scroll', update); element.removeEventListener('wheel', wheel); window.removeEventListener('resize', align); window.removeEventListener('hashchange', fromHash) }
-  }, [])
-
-  useEffect(() => {
-    const element = dialog.current
-    if (!overlay || !element) return
-    element.showModal()
-    return () => { element.close() }
-  }, [overlay])
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.defaultPrevented || (event.target as HTMLElement).matches('input,textarea,select')) return
-      if (overlay && overlay.type !== 'deck' && overlay.type !== 'photo') return
-      if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return
-      event.preventDefault()
-      const next = (current: number, length: number) => event.key === 'Home' ? 0 : event.key === 'End' ? length - 1 : Math.max(0, Math.min(length - 1, current + (event.key === 'ArrowRight' ? 1 : -1)))
-      if (overlay?.type === 'deck') setSlide(value => next(value, deck.length))
-      else if (overlay?.type === 'photo') setPhoto(value => next(value, gallery.length))
-      else go(next(activeRef.current, journey.length))
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [overlay])
-
-  useEffect(() => {
-    if (active !== 5 || overlay) { archive.current?.pause(); setArchivePlaying(false) }
-  }, [active, overlay])
-
-  return <div className={`experience ${dark ? 'experience-dark' : ''}`}>
-    <a className="skip-link" href="#chapter-controls">Skip to chapter navigation</a>
-    <header className="experience-header">
-      <button className="wordmark" onClick={() => go(0)} aria-label="David Nkemere — introduction">DAVID NKEMERE<span /></button>
-      <p className="header-discipline">GTM strategy / Creative direction</p>
-      <div className="header-actions"><button onClick={() => open({ type: 'deck' })}>Executive deck <Arrow /></button><button className="index-trigger" onClick={() => open({ type: 'index' })} aria-label="Open visual index"><span className="index-icon"><i /><i /><i /><i /></span><span>Index</span></button></div>
-    </header>
-    <main ref={track} className="experience-track" aria-label="Selected work, nine chapters" tabIndex={-1}>
-      <section id="top" className="chapter chapter-cover" aria-labelledby="cover-title" inert={active !== 0} data-active={active === 0}>
-        <div className="cover-copy"><p className="eyebrow">Selected work / 2018—2026</p><h1 id="cover-title">Growth,<br /><em>by design.</em></h1><p className="cover-thesis">I build the systems that turn<br />ambition into coordinated action.</p><button className="chapter-cta" onClick={() => go(1)}>Enter the work <Arrow direction="right" /></button></div>
-        <div className="cover-gallery" aria-label="Explore the work through images">
-          <button className="floating-image float-main" onClick={() => go(7)} aria-label="Explore KAIRO creative direction"><img src="/media/jwio.webp" alt="KAIRO in JWIO, directed by David Nkemere" fetchPriority="high" width="1280" height="720" /><span><b>KAIRO / JWIO</b><Arrow /></span></button>
-          <button className="floating-image float-archive" onClick={() => go(5)} aria-label="Explore Dial Up and the creative origin"><img src="/media/dialup-night.webp" alt="A frame from the Dial Up party archive" width="640" height="480" /><span><b>THE EARLY DAYS</b><Arrow /></span></button>
-          <button className="floating-image float-halo" onClick={() => open({ type: 'video', key: 'halo' })} aria-label="Watch KAIRO HALO"><img src="/media/halo.webp" alt="KAIRO in HALO" width="1280" height="720" /><span><b>HALO / WATCH FILM</b><Play /></span></button>
-          <p className="gallery-note">Strategy is a practice.<br />Art is an instinct.</p>
-        </div><span className="cover-location">Los Angeles / Built across disciplines</span>
-      </section>
-      <section id="work" className="chapter chapter-transformation dark-chapter" aria-labelledby="work-title" inert={active !== 1} data-active={active === 1}>
-        <div className="chapter-copy" data-local-scroll><p className="eyebrow">01 / Net Health · 2022—2026</p><h2 id="work-title">The tools.<br />The standard.<br /><em>The philosophy.</em></h2><p>I modernized Net Health’s GTM. Most importantly, I changed the language and philosophy we organized around.</p><button className="chapter-cta" onClick={() => open({ type: 'detail', key: 'work' })}>Inside the transformation <Arrow /></button><div className="context-pair"><strong>~$250M</strong><span>Company ARR context<br />Six product lines</span></div></div>
-        <div className="exhibit-wall"><p className="eyebrow">From my executive work / Portfolio editions</p><button className="wall-exhibit wall-main" onClick={() => open({ type: 'evidence', key: 'account' })} aria-label="Expand Account Progression exhibit"><img src="/media/account-progression.svg" alt={evidence.account.alt} width="1188" height="918" /><span>Account Progression <Arrow /></span></button><button className="wall-exhibit wall-secondary" onClick={() => open({ type: 'evidence', key: 'commissioning' })} aria-label="Expand GTM commissioning exhibit"><img src="/media/work-commissioning.svg" alt={evidence.commissioning.alt} width="1188" height="918" /><span>How work gets commissioned <Arrow /></span></button><span className="wall-caption">Open an exhibit. Follow the thinking.</span></div>
-      </section>
-      <section id="performance" className="chapter chapter-performance" aria-labelledby="performance-title" inert={active !== 2} data-active={active === 2}>
-        <div className="chapter-copy" data-local-scroll><p className="eyebrow">02 / Making growth observable</p><h2 id="performance-title">First, make<br />the number<br /><em>mean something.</em></h2><p>From a one-person digital function to the commercial translation layer under the CRO: diagnose the driver, build the analysis, carry the decision into execution.</p><button className="chapter-cta" onClick={() => open({ type: 'results' })}>Explore performance & context <Arrow /></button></div>
-        <div className="metric-landscape"><button className="metric-feature" onClick={() => open({ type: 'results' })}><span className="eyebrow">Digital pipeline</span><strong>$15.4<span>M</span></strong><span className="metric-note"><b>+43%</b> year over year <Arrow /></span></button><button className="metric-secondary" onClick={() => open({ type: 'results' })}><span className="eyebrow">Closed-won revenue</span><strong>$3.25<span>M</span></strong><span className="metric-note"><b>+69%</b> year over year <Arrow /></span></button><div className="metric-footnote"><span>Resume-reported digital channel results.</span><span>Tap a number for attribution context.</span></div></div>
-      </section>
-      <section id="first-test" className="chapter chapter-pilot" aria-labelledby="pilot-title" inert={active !== 3} data-active={active === 3}>
-        <div className="chapter-copy" data-local-scroll><p className="eyebrow">03 / TherapySource · The first test</p><h2 id="pilot-title">Put sellers<br /><em>upstream.</em></h2><p>A seller’s expertise became the premise for thought leadership and paid activation. It sparked the full-funnel work that followed.</p><button className="chapter-cta" onClick={() => open({ type: 'pilot' })}>Open the original readout context <Arrow /></button><p className="small-premise">“What does this buyer need to understand,<br />and who is best placed to help?”</p></div>
-        <div className="pilot-lab"><div className="lab-top"><span className="eyebrow">Explore the observed funnel</span><div className="year-switch" role="group" aria-label="Pilot observation period">{([2024, 2025] as const).map(year => <button key={year} aria-pressed={pilotYear === year} onClick={() => setPilotYear(year)}>{year}</button>)}</div></div><div className="funnel-bars"><div className="funnel-line"><span>MQLs</span><div><i style={{ width: pilotYear === 2024 ? '100%' : '75%' }} /></div><strong>{pilotYear === 2024 ? '412' : '308'}</strong></div><div className="funnel-line"><span>SQOs</span><div><i style={{ width: pilotYear === 2024 ? '6.5%' : '100%' }} /></div><strong>{pilotYear === 2024 ? '2' : '31'}</strong></div></div><div className="pilot-money" key={pilotYear}><span className="eyebrow">Pipeline / Website inbound + paid</span><strong>{pilotYear === 2024 ? '$31.2K' : '$1.02M'}</strong><span>Closed-won: {pilotYear === 2024 ? '$0' : '$63.1K'}</span></div><p className="lab-note">Apr–Dec 2024 vs Jan–Oct 2025. Different windows; descriptive comparison, not isolated causality. Bar lengths compare each metric across the two periods.</p></div>
-      </section>
-      <section id="operating-model" className="chapter chapter-model" aria-labelledby="model-title" inert={active !== 4} data-active={active === 4}>
-        <div className="model-top"><div><p className="eyebrow">04 / Strategy made operational</p><h2 id="model-title">A shared definition<br /><em>of progress.</em></h2></div><div className="model-tabs" role="tablist" aria-label="GTM operating models">{cases.map((item, index) => <button key={item.id} id={`tab-${item.id}`} role="tab" aria-selected={activeCase === item.id} aria-controls="model-panel" tabIndex={activeCase === item.id ? 0 : -1} onClick={() => setActiveCase(item.id)} onKeyDown={event => { let next = index; if (event.key === 'ArrowRight') next = (index + 1) % cases.length; else if (event.key === 'ArrowLeft') next = (index - 1 + cases.length) % cases.length; else return; event.preventDefault(); setActiveCase(cases[next]!.id); document.getElementById(`tab-${cases[next]!.id}`)?.focus() }}><span>{item.number}</span>{item.id === 'account' ? 'Account Progression' : item.id === 'outbound' ? 'Outbound' : 'Commissioning'}</button>)}</div></div>
-        <div className="model-panel" id="model-panel" role="tabpanel" aria-labelledby={`tab-${activeCase}`} key={activeCase}>
-          {activeCase === 'account' ? <><div className="account-loop" aria-label="Explore the Account Progression stages">{accountStages.map((item, index) => <button className={`loop-stage stage-${index} ${stage === index ? 'selected' : ''}`} key={item.title} onClick={() => setStage(index)} aria-pressed={stage === index}><span>{String(index + 1).padStart(2, '0')}</span>{item.title}<Arrow direction="right" /></button>)}<div className="loop-center"><span>ONE ACCOUNT</span><strong>One<br />revenue team.</strong><span>ONE SCOREBOARD</span></div></div><div className="stage-detail" key={stage}><span className="eyebrow">{accountStages[stage]!.owner}</span><h3>{accountStages[stage]!.title}.</h3><p>{accountStages[stage]!.detail}</p><button className="chapter-cta" onClick={() => open({ type: 'evidence', key: 'account' })}>Open the deck exhibit <Arrow /></button><span className="adaptation-label">Interactive portfolio adaptation of my model.</span></div></> : <><button className="model-image" onClick={() => open({ type: 'evidence', key: activeCase })} aria-label={`Expand exhibit: ${evidence[activeCase].title}`}><img src={evidence[activeCase].image} alt={evidence[activeCase].alt} width="1188" height="918" /><span>Expand the exhibit <Arrow /></span></button><div className="stage-detail"><p className="eyebrow">{currentCase.subtitle}</p><h3>{currentCase.title}</h3><p>{currentCase.change}</p><button className="chapter-cta" onClick={() => open({ type: 'detail', key: 'case' })}>Problem → intervention → impact <Arrow /></button><span className="adaptation-label">{currentCase.status}</span></div></>}
-        </div>
-      </section>
-      <section id="story" className="chapter chapter-story dark-chapter" aria-labelledby="story-title" inert={active !== 5} data-active={active === 5}>
-        <div className="chapter-copy" data-local-scroll><p className="eyebrow">05 / Northwestern → Chicago → GTM</p><h2 id="story-title">Before the<br />executive decks,<br /><em>warehouse parties.</em></h2><p>I grew an art collective from four people to sixteen. The instinct carried over: understand the people, define the idea, build the team, make the work real.</p><div className="story-actions"><button className="chapter-cta" onClick={() => open({ type: 'detail', key: 'story' })}>Read the long way here <Arrow /></button><button className="quiet-link" onClick={() => showPhoto(0)}>Open the photo archive</button></div></div>
-        <div className="archive-composition"><div className="archive-main"><video ref={archive} loop muted playsInline preload="none" poster="/media/dialup-night.webp" aria-label="Dial Up archive film" onPlay={() => setArchivePlaying(true)} onPause={() => setArchivePlaying(false)}><source src="/media/dialup-party.mp4" type="video/mp4" /></video><button className="archive-play" onClick={() => { if (archive.current?.paused) void archive.current.play().catch(() => setArchivePlaying(false)); else archive.current?.pause() }}>{archivePlaying ? 'Pause archive' : 'Play archive'} {archivePlaying ? <span>Ⅱ</span> : <Play />}</button><span className="archive-label">DIAL UP / CHICAGO ARCHIVE</span></div><button className="archive-small archive-one" onClick={() => showPhoto(1)} aria-label="Expand Dial Up collective photograph"><img src="/media/dialup-collective.webp" alt="A frame from Dial Up’s squad archive" width="640" height="480" /></button><button className="archive-small archive-two" onClick={() => open({ type: 'video', key: 'kidsuper' })} aria-label="Watch KidSuper Shopify activation"><img src="/media/kidsuper.webp" alt="KidSuper Shopify activation film thumbnail" width="1280" height="720" /><span>KidSuper × Shopify <Play /></span></button><span className="archive-caption">Creative work was never the detour.</span></div>
-      </section>
-      <section id="california" className="chapter chapter-california" aria-labelledby="california-title" inert={active !== 6} data-active={active === 6}>
-        <div className="chapter-copy" data-local-scroll><p className="eyebrow">06 / California Deep Clean · Founder</p><h2 id="california-title">Build the<br /><em>whole experience.</em></h2><p>The website, the CRM, the growth automations. A local service business makes the connection between marketing and operations immediate.</p><button className="chapter-cta" onClick={() => open({ type: 'detail', key: 'california' })}>Explore what I built <Arrow /></button></div>
-        <div className="california-canvas"><button className="california-project" onClick={() => open({ type: 'link', key: 'california' })} aria-label="Explore California Deep Clean website"><div className="browser-bar"><i /><i /><i /><span>californiadeepclean.com</span><Arrow /></div><img src="/media/california-deep-clean.webp" alt="California Deep Clean brand, from the live website" width="1200" height="630" /><span className="project-caption">A promise at the front.<br />A system behind it.</span></button><div className="growth-path"><button onClick={() => open({ type: 'detail', key: 'california' })}><span>01</span>Discover</button><i /><button onClick={() => open({ type: 'detail', key: 'california' })}><span>02</span>Convert</button><i /><button onClick={() => open({ type: 'detail', key: 'california' })}><span>03</span>Return</button></div><p className="canvas-caption">Website → CRM → Growth loops</p></div>
-      </section>
-      <section id="kairo" className="chapter chapter-kairo dark-chapter" aria-labelledby="kairo-title" inert={active !== 7} data-active={active === 7}>
-        <div className="film-stage"><img key={film} src={media[film].image} alt={`${media[film].title}, a film directed by David Nkemere`} width="1280" height="720" /><div className="film-shade" /><div className="film-stage-copy"><p className="eyebrow">07 / KAIRO · Island / Def Jam / VEVO · 2026</p><h2 id="kairo-title">The art<br /><em>never left.</em></h2><p>Creative Director for KAIRO.<br />Still building things that move people.</p><button className="film-play" onClick={() => open({ type: 'video', key: film })}><span><Play /></span>Watch {film === 'halo' ? 'HALO' : 'JWIO'} <Arrow /></button></div><div className="film-selector" role="group" aria-label="Choose a KAIRO film">{(['halo', 'jwio'] as const).map(key => <button key={key} aria-pressed={film === key} onClick={() => setFilm(key)}><img src={media[key].image} alt="" width="1280" height="720" /><span>{key.toUpperCase()}</span><span>{film === key ? 'Selected' : 'Explore'}</span></button>)}</div></div>
-      </section>
-      <section id="contact" className="chapter chapter-contact" aria-labelledby="contact-title" inert={active !== 8} data-active={active === 8}>
-        <div className="contact-composition"><button className="contact-photo contact-photo-one" onClick={() => showPhoto(4)} aria-label="Expand HALO photograph"><img src="/media/halo.webp" alt="KAIRO in HALO" width="1280" height="720" /></button><button className="contact-photo contact-photo-two" onClick={() => showPhoto(1)} aria-label="Expand Dial Up archive photograph"><img src="/media/dialup-collective.webp" alt="Dial Up squad archive" width="640" height="480" /></button></div><div className="contact-copy"><p className="eyebrow">08 / The next chapter</p><h2 id="contact-title">Let’s build<br /><em>what’s next.</em></h2><p>A GTM leader who can find the driver,<br />design the system and get the work across the line.</p><a className="chapter-cta" href={`mailto:${profile.email}`}>Start a conversation <Arrow /></a><button className="quiet-link" onClick={() => open({ type: 'index' })}>Explore the work again</button></div><span className="contact-signature">David Nkemere / Los Angeles</span>
-      </section>
-    </main>
-    <footer className="experience-footer" id="chapter-controls"><button className="footer-index" onClick={() => open({ type: 'index' })}><span>{String(active + 1).padStart(2, '0')} / 09</span><span>{journey[active]!.label}</span><span className="footer-index-plus">+</span></button><nav className="chapter-dots" aria-label="Chapter navigation">{journey.map((chapter, index) => <button key={chapter.id} onClick={() => go(index)} aria-label={`Chapter ${index + 1}: ${chapter.label}`} aria-current={active === index ? 'step' : undefined}><span /><b>{chapter.short}</b></button>)}</nav><div className="chapter-arrows"><span>Swipe / ← →</span><button disabled={active === 0} onClick={() => go(active - 1)} aria-label="Previous chapter"><Arrow direction="left" /></button><button disabled={active === journey.length - 1} onClick={() => go(active + 1)} aria-label="Next chapter"><Arrow direction="right" /></button></div></footer>
-    <div className="chapter-progress" style={{ transform: `scaleX(${(active + 1) / journey.length})` }} />
-    <p className="sr-only" aria-live="polite">Chapter {active + 1} of 9: {journey[active]!.label}</p>
-    {overlay && <dialog ref={dialog} className={`overlay overlay-${overlay.type}`} aria-labelledby="modal-title" onCancel={event => { event.preventDefault(); close() }} onClick={event => { if (event.target === dialog.current) close() }}><button className="overlay-close" onClick={close} aria-label="Close overlay"><span /><span /></button>
-      {overlay.type === 'index' && <div className="visual-index"><p className="eyebrow">Choose your own way through</p><h2 id="modal-title">A few connected worlds.</h2><div className="index-grid">{journey.map((chapter, index) => <button key={chapter.id} onClick={() => { close(); go(index) }} aria-label={`Go to ${chapter.label}`}><img src={chapter.image} alt="" width="1280" height="720" /><span><b>{String(index).padStart(2, '0')} / {chapter.short}</b><Arrow /></span><strong>{chapter.label}</strong><small>{chapter.caption}</small></button>)}</div></div>}
-      {overlay.type === 'photo' && <div className="photo-modal"><div className="photo-lightbox" key={photo}><img src={gallery[photo]!.image} alt={gallery[photo]!.caption} /><div><p className="eyebrow">{gallery[photo]!.kind}</p><h2 id="modal-title">{gallery[photo]!.label}</h2><p>{gallery[photo]!.caption}</p></div></div><div className="photo-controls"><span>{String(photo + 1).padStart(2, '0')} / {String(gallery.length).padStart(2, '0')}</span><div><button onClick={() => setPhoto(value => Math.max(0, value - 1))} disabled={photo === 0} aria-label="Previous photograph"><Arrow direction="left" /></button><button onClick={() => setPhoto(value => Math.min(gallery.length - 1, value + 1))} disabled={photo === gallery.length - 1} aria-label="Next photograph"><Arrow direction="right" /></button></div></div></div>}
-      {overlay.type === 'detail' && <div className="context-modal">
-        {overlay.key === 'work' && <><p className="eyebrow">Net Health / Inside the transformation</p><h2 id="modal-title">The function didn’t exist yet.<br />The need already did.</h2><p>I became a one-person function managing an almost million-dollar annual ad budget, an agency relationship in the UK, and the analysis of marketing’s influence on pipeline and revenue.</p><p>Under a direct mandate from the Chief Revenue Officer, I began doing the work between functions: finding the real driver of a revenue problem, building the analysis, presenting the narrative to business unit presidents and the executive team, and making sure the recommendations actually became GTM tests.</p><p>I built the Account Progression model Net Health pivoted to, redesigned outbound, and redesigned how work gets commissioned and activated across GTM. Alongside an AI-first SVP of Marketing I helped bring in, I worked on a new model for GTM interlocks.</p><p>Stronger premises. Clearer ownership. A shared definition of commercial progress. Repeatable frameworks and self-serve tools made recurring work faster and more rigorous.</p></>}
-        {overlay.key === 'story' && <><p className="eyebrow">Autobiography / The long way here</p><h2 id="modal-title">Then the business problems<br />got interesting.</h2><p>I studied Learning & Organizational Change at Northwestern. I learned quickly that management consulting wasn’t the life I wanted. Building things with people was.</p><p>I was doing design work for <button className="inline-link" onClick={() => open({ type: 'link', key: 'testing' })}>A$AP Rocky’s TESTING ↗</button>, throwing warehouse parties and <button className="inline-link" onClick={() => open({ type: 'video', key: 'kidsuper' })}>Shopify activations with KidSuper ↗</button>, and <button className="inline-link" onClick={() => open({ type: 'link', key: 'yachty' })}>performing with Lil Yachty ↗</button> at drive-in shows in Chicago.</p><p>I grew <button className="inline-link" onClick={() => open({ type: 'link', key: 'dialup' })}>an art collective ↗</button> from four people to sixteen. While working and traveling, I took a remote digital marketing job at Net Health.</p><p>At first, I wanted health benefits and something credible to point my immigrant Nigerian parents toward while I kept pursuing art.</p><p>Then the business problems got interesting. The instinct carried over: understand the people, define the idea, build the team, make the work real. It just started showing up in revenue models, operating frameworks and executive rooms.</p></>}
-        {overlay.key === 'california' && <><p className="eyebrow">California Deep Clean / Founder</p><h2 id="modal-title">From first impression<br />to follow-through.</h2><p>A local service business makes the connection between marketing and operations immediate. The website promises an experience. The rest of the business has to deliver it.</p><div className="context-fact"><span>Website</span><strong>The front door to the customer experience</strong></div><div className="context-fact"><span>CRM</span><strong>A shared view of customers and follow-through</strong></div><div className="context-fact"><span>Growth automations</span><strong>Connect acquisition with ongoing customer relationships</strong></div><p>At California Deep Clean, I built these systems to connect the customer experience to the work behind it.</p><a className="button" href={links.california.url} target="_blank" rel="noopener noreferrer">Visit California Deep Clean <Arrow /></a></>}
-        {overlay.key === 'case' && <><p className="eyebrow">{currentCase.subtitle}</p><h2 id="modal-title">{currentCase.title}</h2><h3>Problem</h3><p>{currentCase.problem}</p><h3>Intervention</h3><p>{currentCase.change}</p><h3>What changed</h3><p>{currentCase.implication}</p><p className="modal-source">{currentCase.status}</p></>}
-      </div>}
-      {overlay.type === 'evidence' && <div className="evidence-modal"><p className="eyebrow">{evidence[overlay.key].category}</p><h2 id="modal-title">{evidence[overlay.key].title}</h2><p>{evidence[overlay.key].description}</p><img src={evidence[overlay.key].image} alt={evidence[overlay.key].alt} width="1188" height="918" /><p className="modal-source">{evidence[overlay.key].source}</p></div>}
-      {overlay.type === 'video' && <div className="video-modal"><p className="eyebrow">{media[overlay.key].category}</p><h2 id="modal-title">{media[overlay.key].title}</h2><div className="video-frame"><iframe title={media[overlay.key].title} src={`https://www.youtube-nocookie.com/embed/${media[overlay.key].videoId}?autoplay=1&start=${'start' in media[overlay.key] ? media[overlay.key].start : 0}`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" /></div><div className="video-meta"><p>{media[overlay.key].description}</p><a href={media[overlay.key].url} target="_blank" rel="noopener noreferrer">Open on YouTube <Arrow /></a></div></div>}
-      {overlay.type === 'link' && <div className="link-modal"><p className="eyebrow">{links[overlay.key].category}</p><h2 id="modal-title">{links[overlay.key].title}</h2>{'image' in links[overlay.key] && <img src={links[overlay.key].image} alt={links[overlay.key].title} />}<p>{links[overlay.key].description}</p><a className="button" href={links[overlay.key].url} target="_blank" rel="noopener noreferrer">{overlay.key === 'yachty' ? 'Read the article' : 'Visit the project'} <Arrow /></a><span className="external-note">Opens the original source in a new tab.</span></div>}
-      {overlay.type === 'results' && <div className="context-modal"><p className="eyebrow">Net Health / Performance context</p><h2 id="modal-title">What these numbers represent.</h2><p>The $15.4M in pipeline and $3.25M in closed-won revenue are digital channel results reported in my resume, across paid, organic and programmatic work supporting six products. The reported year-over-year changes are +43% and +69%, respectively.</p><p>They describe channel performance during my tenure, alongside the work of Sales, Marketing and the wider business. They are not presented as revenue I generated alone.</p><div className="context-fact"><span>Operating scope</span><strong>~$950K annual advertising budget</strong></div><div className="context-fact"><span>Company context</span><strong>Approaching $250M ARR</strong></div><p className="modal-source">Source: David Nkemere’s resume and account of the work. Reported year-over-year digital channel performance.</p></div>}
-      {overlay.type === 'pilot' && <div className="context-modal"><p className="eyebrow">TherapySource / Pilot readout</p><h2 id="modal-title">A seller-led premise.<br />A different funnel.</h2><p>The January 2025 test paired seller-authored thought leadership with LinkedIn Conversation Ads. The premise came from buyer tensions in operations, staffing and finance.</p><div className="pilot-table-wrap"><table><caption>LinkedIn only · Apr–Dec 2024 versus Jan–Oct 2025</caption><thead><tr><th scope="col">Metric</th><th scope="col">2024</th><th scope="col">2025</th></tr></thead><tbody><tr><th scope="row">MQLs</th><td>250</td><td>74</td></tr><tr><th scope="row">SALs</th><td>148</td><td>52</td></tr><tr><th scope="row">SQLs</th><td>1</td><td>15</td></tr><tr><th scope="row">SQOs</th><td>1</td><td>10</td></tr><tr><th scope="row">Pipeline</th><td>$0</td><td>$561,340</td></tr><tr><th scope="row">Closed-won</th><td>$0</td><td>$18,000</td></tr></tbody></table></div><p>This was the first test that sparked more full-funnel work using sellers themselves to drive marketing initiatives. It created a repeatable strategic direction; the before-and-after comparison does not establish the test’s isolated causal effect.</p><p className="modal-source">Source: internal readout shared in October 2025. Nine-month versus approximately ten-month windows. Website inbound + paid totals on the main page include channels beyond LinkedIn.</p></div>}
-      {overlay.type === 'deck' && <div className="deck-modal"><div className="deck-topline"><span>David Nkemere / Selected work</span><span aria-live="polite">{String(slide + 1).padStart(2, '0')} / {String(deck.length).padStart(2, '0')}</span></div><div className="deck-slide" key={slide}><p className="eyebrow">{deck[slide]!.kicker}</p><h2 id="modal-title">{deck[slide]!.title}</h2><p className="deck-body">{deck[slide]!.text}</p><div className="deck-metric"><strong>{deck[slide]!.metric}</strong><span>{deck[slide]!.caption}</span></div></div><div className="deck-controls"><span className="deck-help">Use ← → to navigate</span><div className="deck-dots" aria-label="Deck slides">{deck.map((s, i) => <button key={s.title} onClick={() => setSlide(i)} className={slide === i ? 'active' : ''} aria-label={`Slide ${i + 1}: ${s.title}`} aria-current={slide === i ? 'step' : undefined} />)}</div><div className="deck-arrows"><button disabled={slide === 0} onClick={() => setSlide(s => s - 1)} aria-label="Previous slide"><Arrow direction="left" /></button><button disabled={slide === deck.length - 1} onClick={() => setSlide(s => s + 1)} aria-label="Next slide"><Arrow direction="right" /></button></div></div></div>}
-    </dialog>}
-  </div>
+function Homepage() {
+  const { open } = useSite()
+  return <main id="main">
+    <section className="intro page-width">
+      <div className="intro-label"><span>GTM strategy</span><span>Creative direction</span></div>
+      <h1>{story.opening}</h1>
+      <div className="intro-bottom"><p>{story.thesis}</p><a className="text-link" href="#the-story">Here’s how I got there <span aria-hidden="true">↓</span></a></div>
+    </section>
+    <div className="opening-grid page-width" aria-label="Explore selected work">
+      <MediaCard title="Net Health" subtitle="Account Progression · Outbound · GTM interlocks" image="/media/account-progression.svg" to="/stories/net-health" className="model-card" />
+      <MediaCard title="Dial Up" subtitle="The art collective I grew from 4 to 16" image="/media/dialup-night.webp" video="/media/dialup-party.mp4" to="/stories/creative-work" />
+      <MediaCard title="KAIRO" subtitle="Creative direction · 2026" image="/media/jwio.webp" to="/stories/kairo" />
+    </div>
+    <section id="the-story" className="story-section page-width education">
+      <div className="section-marker">The way here <span>01</span></div>
+      <div className="education-layout"><div className="brand-block"><Brand name="northwestern" /><span>BS · Learning & Organizational Change</span></div><p className="narrative">{story.education}</p></div>
+    </section>
+    <section className="creative-section page-width">
+      <p className="narrative creative-intro">I was doing design work for A$AP Rocky’s 2018 album <InlineSource source="testing">TESTING</InlineSource>, throwing warehouse parties and <InlineSource source="kidsuper">Shopify activations</InlineSource> with KidSuper on their way to earning their LVMH Karl Lagerfeld award, and <InlineSource source="yachty">performing with Lil Yachty</InlineSource> at socially distanced drive-in shows in Chicago.</p>
+      <div className="creative-grid">
+        <MediaCard title="TESTING" subtitle="A$AP Rocky · Digital design · 2018" image="/media/testing-cover.jpg" onClick={() => open({ kind: 'source', key: 'testing' })} />
+        <MediaCard title="KidSuper × Shopify" subtitle="Watch the activation" image="/media/kidsuper.webp" onClick={() => open({ kind: 'video', key: 'kidsuper' })} play />
+      </div>
+      <div className="creative-foot"><div className="context-brands"><Brand name="shopify" /><Brand name="redbull" /></div><StoryLink to="/stories/creative-work">More of the creative work</StoryLink></div>
+    </section>
+    <section className="collective-section page-width">
+      <div className="collective-copy"><p className="narrative">I led and grew an <InlineSource source="dialup">art collective</InlineSource> from <span className="number-inline">4 to 16</span> and built a lot in the process.</p><p>{story.job}</p></div>
+      <MediaCard title="Dial Up" subtitle="People, parties, and the work we built" image="/media/dialup-collective.webp" video="/media/dialup-squad.mp4" to="/stories/creative-work" />
+    </section>
+    <section className="net-health-section"><div className="page-width">
+      <div className="section-marker">Net Health <span>02</span></div>
+      <div className="parents-line"><span className="small-label">Why I took the job</span><p className="narrative">{story.parents}</p></div>
+      <div className="digital-layout"><p className="narrative">{story.digital}</p><aside className="scope-note"><strong>~$1M</strong><span>Ad spend budget</span><p>A one-person digital function.</p></aside></div>
+      <div className="role-history"><p>{story.promotions}</p><div><span>Digital Marketing Manager</span><span aria-hidden="true">↗</span><span>Interim Director of Digital</span><span aria-hidden="true">↗</span><span>Manager of Demand Generation</span></div></div>
+      <div className="narrative-column"><p className="narrative">{story.funnel}</p><p>{story.analytics}</p><p>{story.strategy}</p></div>
+      <div className="gtm-caption"><p>{story.scale}</p><span>Company context, not my personal revenue contribution.</span></div>
+      <div className="gtm-panels">
+        <Link to="/stories/net-health" className="gtm-panel"><span>Account Progression</span><h2>{story.account}</h2><img src="/media/account-progression.svg" alt="A portfolio adaptation of my Account Progression model" loading="lazy" /><span className="panel-action">Explore the model <span aria-hidden="true">↗</span></span></Link>
+        <div className="gtm-panel interlocks-panel"><span>Outbound & GTM interlocks</span><p className="narrative">{story.interlocks}</p><StoryLink to="/stories/net-health">The analysis and operating work</StoryLink></div>
+      </div>
+      <div className="test-preview"><div><span className="small-label">The first seller-led test</span><h2>{story.test}</h2><StoryLink to="/stories/seller-led-test">Open the test and readout</StoryLink></div><div className="test-numbers"><span>SQOs</span><strong>2 <span>→</span> 31</strong><p>Apr–Dec 2024 / Jan–Oct 2025<br />Different windows · descriptive comparison</p></div></div>
+      <div className="narrative-column closing-gtm"><p>{story.scope}</p><p className="narrative">{story.next}</p></div>
+    </div></section>
+    <section className="california-section page-width">
+      <div className="section-marker">California Deep Clean <span>03</span></div>
+      <div className="california-grid"><div><h2>{story.california}</h2><StoryLink to="/stories/california-deep-clean">See what I built</StoryLink></div><MediaCard title="California Deep Clean" subtitle="Website · CRM · Growth automations" image="/media/california-deep-clean.webp" to="/stories/california-deep-clean" className="brand-image" /></div>
+    </section>
+    <section className="kairo-section"><div className="page-width">
+      <div className="section-marker">KAIRO <span>04 / 2026</span></div>
+      <div className="kairo-intro"><h2>{story.art}</h2><p>In 2026, I directed <InlineSource source="halo">HALO</InlineSource> and <InlineSource source="jwio">JWIO</InlineSource> for Island / Def Jam and VEVO as Creative Director for KAIRO.</p></div>
+      <div className="film-grid"><MediaCard title="HALO" subtitle="KAIRO · Directed by David Nkemere" image="/media/halo.webp" onClick={() => open({ kind: 'video', key: 'halo' })} play /><MediaCard title="JWIO" subtitle="KAIRO · Directed by David Nkemere" image="/media/jwio.webp" onClick={() => open({ kind: 'video', key: 'jwio' })} play /></div>
+      <StoryLink to="/stories/kairo">The films</StoryLink>
+    </div></section>
+    <section className="contact-section page-width" id="contact"><span className="small-label">{profile.name}</span><h2>Let’s build.</h2><a href={'mailto:' + profile.email}>{profile.email}</a><p>{profile.focus} · {profile.location}</p></section>
+  </main>
 }

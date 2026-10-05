@@ -42,3 +42,11 @@ No generated portrait, stock business photography, fabricated quote or customer 
 ## Before public launch
 
 Confirm metric reporting periods, attribution language, role chronology, personal name preference, original credit language and the chosen public evidence. Decide on a portrait, resume download and domain. The current public code repository is a draft; `noindex` does not make a deployment private. Original confidential assets must stay excluded.
+
+## Narrative revision assets
+
+- TESTING: album artwork from https://tstng.co/images/cover.jpg, the user-supplied project site.
+- Northwestern: official horizontal wordmark PNG from https://www.northwestern.edu/brand/images/horizontal-wordmark.png, retained with its original clear space.
+- Shopify: primary logo SVG from the official brand-assets page and Shopify CDN. No recoloring or reshaping.
+- Red Bull: Red Bull GmbH wordmark mirrored at https://commons.wikimedia.org/wiki/File:Logo_of_Red_bull.svg. Context requested by the user; no invented client relationship or case result.
+- Dial Up squad loop: original public squad.mp4 in addition to the party clip. These are documentary archive clips, not generated material.

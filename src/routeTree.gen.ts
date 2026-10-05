@@ -10,33 +10,103 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StoriesCaliforniaDeepCleanRouteImport } from './routes/stories.california-deep-clean'
+import { Route as StoriesCreativeWorkRouteImport } from './routes/stories.creative-work'
+import { Route as StoriesKairoRouteImport } from './routes/stories.kairo'
+import { Route as StoriesNetHealthRouteImport } from './routes/stories.net-health'
+import { Route as StoriesSellerLedTestRouteImport } from './routes/stories.seller-led-test'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StoriesCaliforniaDeepCleanRoute =
+  StoriesCaliforniaDeepCleanRouteImport.update({
+    id: '/stories/california-deep-clean',
+    path: '/stories/california-deep-clean',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const StoriesCreativeWorkRoute = StoriesCreativeWorkRouteImport.update({
+  id: '/stories/creative-work',
+  path: '/stories/creative-work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoriesKairoRoute = StoriesKairoRouteImport.update({
+  id: '/stories/kairo',
+  path: '/stories/kairo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoriesNetHealthRoute = StoriesNetHealthRouteImport.update({
+  id: '/stories/net-health',
+  path: '/stories/net-health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoriesSellerLedTestRoute = StoriesSellerLedTestRouteImport.update({
+  id: '/stories/seller-led-test',
+  path: '/stories/seller-led-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/stories/california-deep-clean': typeof StoriesCaliforniaDeepCleanRoute
+  '/stories/creative-work': typeof StoriesCreativeWorkRoute
+  '/stories/kairo': typeof StoriesKairoRoute
+  '/stories/net-health': typeof StoriesNetHealthRoute
+  '/stories/seller-led-test': typeof StoriesSellerLedTestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/stories/california-deep-clean': typeof StoriesCaliforniaDeepCleanRoute
+  '/stories/creative-work': typeof StoriesCreativeWorkRoute
+  '/stories/kairo': typeof StoriesKairoRoute
+  '/stories/net-health': typeof StoriesNetHealthRoute
+  '/stories/seller-led-test': typeof StoriesSellerLedTestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/stories/california-deep-clean': typeof StoriesCaliforniaDeepCleanRoute
+  '/stories/creative-work': typeof StoriesCreativeWorkRoute
+  '/stories/kairo': typeof StoriesKairoRoute
+  '/stories/net-health': typeof StoriesNetHealthRoute
+  '/stories/seller-led-test': typeof StoriesSellerLedTestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/stories/california-deep-clean'
+    | '/stories/creative-work'
+    | '/stories/kairo'
+    | '/stories/net-health'
+    | '/stories/seller-led-test'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/stories/california-deep-clean'
+    | '/stories/creative-work'
+    | '/stories/kairo'
+    | '/stories/net-health'
+    | '/stories/seller-led-test'
+  id:
+    | '__root__'
+    | '/'
+    | '/stories/california-deep-clean'
+    | '/stories/creative-work'
+    | '/stories/kairo'
+    | '/stories/net-health'
+    | '/stories/seller-led-test'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  StoriesCaliforniaDeepCleanRoute: typeof StoriesCaliforniaDeepCleanRoute
+  StoriesCreativeWorkRoute: typeof StoriesCreativeWorkRoute
+  StoriesKairoRoute: typeof StoriesKairoRoute
+  StoriesNetHealthRoute: typeof StoriesNetHealthRoute
+  StoriesSellerLedTestRoute: typeof StoriesSellerLedTestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +118,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stories/california-deep-clean': {
+      id: '/stories/california-deep-clean'
+      path: '/stories/california-deep-clean'
+      fullPath: '/stories/california-deep-clean'
+      preLoaderRoute: typeof StoriesCaliforniaDeepCleanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stories/creative-work': {
+      id: '/stories/creative-work'
+      path: '/stories/creative-work'
+      fullPath: '/stories/creative-work'
+      preLoaderRoute: typeof StoriesCreativeWorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stories/kairo': {
+      id: '/stories/kairo'
+      path: '/stories/kairo'
+      fullPath: '/stories/kairo'
+      preLoaderRoute: typeof StoriesKairoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stories/net-health': {
+      id: '/stories/net-health'
+      path: '/stories/net-health'
+      fullPath: '/stories/net-health'
+      preLoaderRoute: typeof StoriesNetHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stories/seller-led-test': {
+      id: '/stories/seller-led-test'
+      path: '/stories/seller-led-test'
+      fullPath: '/stories/seller-led-test'
+      preLoaderRoute: typeof StoriesSellerLedTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  StoriesCaliforniaDeepCleanRoute: StoriesCaliforniaDeepCleanRoute,
+  StoriesCreativeWorkRoute: StoriesCreativeWorkRoute,
+  StoriesKairoRoute: StoriesKairoRoute,
+  StoriesNetHealthRoute: StoriesNetHealthRoute,
+  StoriesSellerLedTestRoute: StoriesSellerLedTestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

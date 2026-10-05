@@ -3,7 +3,8 @@
 Read `docs/BUILD-BRIEF.md` and `docs/EVIDENCE.md` before changing the story or assets.
 
 - Preserve the user's autobiographical voice, creative identity and concrete GTM accomplishments.
-- Keep California Deep Clean immediately before KAIRO in both site and deck.
+- Follow the original narrative order on a natural-reading homepage with real story subpages. Do not reinstate forced horizontal chapters.
+- Keep California Deep Clean immediately before KAIRO.
 - Do not invent impact, job titles, dates, testimonials or personal photographs.
 - Separate observed results, user-reported implementation and proposed test hypotheses.
 - Do not commit confidential source decks, private chat screenshots, credentials or customer-identifying data.

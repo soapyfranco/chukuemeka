@@ -1,65 +1,52 @@
 # Chukuemeka / David Nkemere
 
-A personal GTM portfolio: an interactive chapter experience with an executive deck view.
+A personal GTM portfolio built around David's original story, real project imagery and video, source popups, and five deeper story pages.
 
-![Desktop design preview](docs/previews/desktop.png)
+![Homepage](docs/previews/desktop.png)
 
-[See the interaction walkthrough, previews and validation](docs/VALIDATION.md).
-
-React 19, TypeScript, TanStack Start, Vite and Nitro. The project runs independently of Lovable and does not need a backend, API key or database. Vercel deployment configuration is included.
+React 19, TypeScript, TanStack Start, Vite and Nitro. No backend or database is needed.
 
 ## Start locally
 
-Install Node.js 24 LTS, then clone this repository into the folder you use for projects:
+Use Node 24, clone https://github.com/soapyfranco/chukuemeka, then run:
 
 ```bash
-git clone https://github.com/soapyfranco/chukuemeka.git
-cd chukuemeka
 npm ci
 npm run dev
+npm run check
 ```
 
-Open `http://localhost:3000`. Open the same folder in VS Code or the Codex desktop app. VS Code extension recommendations are included; extensions have not been installed on your computer by this setup.
+The development site runs at http://localhost:3000. Open the checkout in VS Code or Codex for edits.
 
-```bash
-npm run check   # Production build and TypeScript
-npm start       # Serve the completed production build locally
-```
-
-## Where to work
+## Product files
 
 | File | Purpose |
 | --- | --- |
-| `src/content/portfolio.ts` | Story, metrics, source context, case studies, links and deck slides |
-| `src/components/Portfolio.tsx` | Horizontal chapters, visual index, interactive models, media and deck controls |
-| `src/styles.css` | Design tokens, layouts, motion, mobile and print styles |
-| `public/media/` | Optimized real project imagery and portfolio diagrams |
-| `docs/BUILD-BRIEF.md` | Creative direction and roadmap for further work |
-| `docs/EVIDENCE.md` | Sources, claim boundaries and publication decisions |
+| src/content/portfolio.ts | Original story, evidence, metrics and source links |
+| src/components/Portfolio.tsx | Narrative homepage |
+| src/components/Site.tsx | Navigation, media cards, motion and popups |
+| src/components/Stories.tsx | Five longer stories and interactive GTM work |
+| src/routes/stories.*.tsx | Actual story routes and titles |
+| src/styles.css | Responsive design |
+| public/media/ | Authentic project media, logos and adapted exhibits |
+| docs/BUILD-BRIEF.md | Current user direction |
+| docs/EVIDENCE.md | Sources and claim boundaries |
+| docs/VALIDATION.md | Verification and previews |
 
-## Keep iteration inexpensive
+## Lovable workflow
 
-GitHub is the shared source of truth. Use Codex and VS Code for content, layout, interactions, fixes and testing. Commit small changes and use branches for larger experiments. Avoid editing the same files simultaneously in multiple tools.
+The confirmed production sync repository is **soapyfranco/happy-canvas-starter-18**, connected to [Fresh Start Site](https://lovable.dev/projects/89621581-cd07-40d9-8406-9a50921e37bd). This repository remains the development source. Transfer tested product changes while preserving the production scaffold, dependencies, special email routes and Git history. Avoid simultaneous edits in Lovable and the development tools.
 
-Lovable access is now verified. The interactive revision is synced into the existing [Fresh Start Site project](https://lovable.dev/projects/89621581-cd07-40d9-8406-9a50921e37bd) through its confirmed production repository, [soapyfranco/happy-canvas-starter-18](https://github.com/soapyfranco/happy-canvas-starter-18). This repository remains the development source. GitHub sync avoided a Lovable AI generation round; no Lovable build credits were used for the transfer. See `docs/LOVABLE-TRANSFER.md` for the current workflow and publication state.
+Direct GitHub sync avoids Lovable AI generation rounds. Hosting, domains and subscriptions are separate. See docs/LOVABLE-TRANSFER.md for the synced revision and actual publication status.
 
-## Deploy
+## Experience
 
-The repository includes `vercel.json` and the Nitro Vite integration. Vercel can detect TanStack Start when importing this Git repository. No runtime secrets are required. The interactive code is available in Lovable preview. The publication API accepted the update but returned `pending`; completion has not been independently confirmed. No custom domain is connected.
+- Original autobiography and accomplishments in the supplied order, with light punctuation edits.
+- Natural reading and click-through pages for creative work, Net Health, the seller-led test, California Deep Clean and KAIRO.
+- Large authentic media panels, public Dial Up video loops, Northwestern / Shopify / Red Bull logos in context.
+- YouTube, article and project popups with direct original links.
+- Account Progression stages, model tabs, expanded exhibits and an exact test readout.
+- Global motion control, reduced-motion support, keyboard-accessible dialogs and mobile layouts.
+- California Deep Clean immediately before KAIRO.
 
-The site currently has `noindex, nofollow` metadata while the copy and evidence are reviewed. This is an indexing preference, not access control. Review `docs/EVIDENCE.md` before publishing; remove the draft robots directive when the public version is ready.
-
-## Experience included
-
-- Nine full-screen chapters with horizontal swipe, keyboard and wheel navigation, shareable chapter links and a visual index.
-- Photography compositions, photo lightbox, an inline Dial Up archive film and a full-screen KAIRO film selector.
-- Interactive Account Progression stages and a switchable seller-led pilot readout.
-- Nine-slide executive deck mode.
-- Keyboard-accessible evidence overlays, video popups and external source previews.
-- Three operating model exhibits: Account Progression, outbound and commissioning.
-- Seller-led pilot, autobiographical chapter, California Deep Clean immediately before KAIRO, and contact link.
-- Self-hosted font, optimized images, reduced-motion support and basic SEO metadata.
-
-## Project status
-
-This is an interactive revision for design and content review. Personal portrait photography, richer California Deep Clean project screenshots, approved original deck excerpts, final reporting periods, a downloadable resume and domain choice are remaining editorial inputs. Existing source decks and private chat screenshots are not committed to this public repository.
+Original confidential decks and private screenshots are excluded from the public repository. The operating exhibits are labeled portfolio adaptations. See docs/EVIDENCE.md for remaining editorial inputs.
