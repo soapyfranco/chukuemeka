@@ -2,6 +2,10 @@
 
 A personal GTM portfolio: half executive deck, half editorial web experience.
 
+![Desktop design preview](docs/previews/desktop.png)
+
+[See desktop, deck and mobile previews and validation](docs/VALIDATION.md).
+
 React 19, TypeScript, TanStack Start, Vite and Nitro. The project runs independently of Lovable and does not need a backend, API key or database. Vercel deployment configuration is included.
 
 ## Start locally
